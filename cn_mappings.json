@@ -1,0 +1,16 @@
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "data": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "analyzer": "cn_ik_max",
+            "search_analyzer": "cn_ik_smart",
+            "type": "text"
+          }
+        }
+      }
+    ]
+  }
+}

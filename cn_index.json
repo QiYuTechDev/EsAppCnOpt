@@ -1,0 +1,157 @@
+{
+  "mappings": {
+    "dynamic": "true",
+    "dynamic_templates": [
+      {
+        "permissions": {
+          "match": "_*_permissions",
+          "mapping": {
+            "type": "keyword"
+          }
+        }
+      },
+      {
+        "thumbnails": {
+          "match": "_thumbnail_*",
+          "mapping": {
+            "type": "binary"
+          }
+        }
+      },
+      {
+        "cn_string": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "analyzer": "ik_max_word",
+            "search_analyzer": "ik_smart",
+            "type": "text"
+          }
+        }
+      },
+      {
+        "data": {
+          "match_mapping_type": "*",
+          "mapping": {
+            "analyzer": "iq_text_base",
+            "fields": {
+              "date": {
+                "format": "strict_date_time||strict_date",
+                "ignore_malformed": true,
+                "type": "date"
+              },
+              "location": {
+                "ignore_malformed": true,
+                "type": "geo_point",
+                "ignore_z_value": false
+              },
+              "float": {
+                "ignore_malformed": true,
+                "type": "double"
+              },
+              "enum": {
+                "ignore_above": 2048,
+                "type": "keyword"
+              }
+            },
+            "index_options": "freqs",
+            "type": "text"
+          }
+        }
+      }
+    ],
+    "properties": {
+      "id": {
+        "type": "keyword"
+      }
+    }
+  },
+  "settings": {
+    "index": {
+      "mapping": {
+        "total_fields": {
+          "limit": "99999999"
+        }
+      },
+      "indexing": {
+        "slowlog": {
+          "threshold": {
+            "index": {
+              "warn": "10s",
+              "trace": "500ms",
+              "debug": "2s",
+              "info": "5s"
+            }
+          }
+        }
+      },
+      "auto_expand_replicas": "0-1",
+      "analysis": {
+        "filter": {
+          "english_stop": {
+            "type": "stop",
+            "stopwords": "_english_"
+          }
+        },
+        "analyzer": {
+          "iq_text_base": {
+            "filter": [
+              "lowercase",
+              "asciifolding",
+              "english_stop"
+            ],
+            "tokenizer": "standard"
+          },
+          "cn_ik_max": {
+            "tokenizer": "ik_max_word",
+            "filter": [
+              "lowercase",
+              "english_stop"
+            ]
+          },
+          "cn_ik_smart": {
+            "tokenizer": "ik_smart",
+            "filter": [
+              "lowercase",
+              "english_stop"
+            ]
+          }
+        }
+      },
+      "priority": "150",
+      "number_of_replicas": "0",
+      "codec": "best_compression",
+      "routing": {
+        "allocation": {
+          "include": {
+            "_tier_preference": "data_content"
+          }
+        }
+      },
+      "search": {
+        "slowlog": {
+          "level": "debug",
+          "threshold": {
+            "fetch": {
+              "warn": "1000ms",
+              "trace": "200ms",
+              "debug": "300ms",
+              "info": "800ms"
+            },
+            "query": {
+              "warn": "2000ms",
+              "trace": "500ms",
+              "debug": "1000ms",
+              "info": "1500ms"
+            }
+          }
+        }
+      },
+      "number_of_shards": "2",
+      "similarity": {
+        "default": {
+          "type": "BM25"
+        }
+      }
+    }
+  }
+}
