@@ -17,16 +17,6 @@ def load_es_config() -> dict:
     return load_json_file(es_file)
 
 
-def load_cn_settings() -> dict:
-    settings_file = os.path.join(os.path.dirname(__file__), 'cn_settings.json')
-    return load_json_file(settings_file)
-
-
-def load_cn_mappings() -> dict:
-    mappings_file = os.path.join(os.path.dirname(__file__), 'cn_mappings.json')
-    return load_json_file(mappings_file)
-
-
 def load_cn_index() -> dict:
     index_file = os.path.join(os.path.dirname(__file__), 'cn_index.json')
     return load_json_file(index_file)
@@ -37,6 +27,10 @@ def load_cn_index() -> dict:
 def main(name: str):
     """
     `name` Elastic App Search Name
+
+    使用针对中文优化 index 配置替换 Elastic App Search 的默认配置
+
+    此脚本仅允许在创建 Elastic App Search 之后立即使用。
     """
     app_search_index = f'.ent-search-engine-documents-{name}'
     es = Elasticsearch(**load_es_config())
